@@ -119,6 +119,7 @@ namespace MiPrimerTaller.Controles
             this.btnEliminarTurno.Text = "Eliminar Turno";
             this.btnEliminarTurno.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnEliminarTurno.UseVisualStyleBackColor = false;
+            this.btnEliminarTurno.Click += new System.EventHandler(this.btnEliminarTurno_Click);
             // 
             // calendario
             // 
@@ -158,9 +159,9 @@ namespace MiPrimerTaller.Controles
             // 
             this.dgvTurnos.BackgroundColor = System.Drawing.SystemColors.ControlLight;
             this.dgvTurnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTurnos.Location = new System.Drawing.Point(415, 73);
+            this.dgvTurnos.Location = new System.Drawing.Point(396, 73);
             this.dgvTurnos.Name = "dgvTurnos";
-            this.dgvTurnos.Size = new System.Drawing.Size(184, 162);
+            this.dgvTurnos.Size = new System.Drawing.Size(155, 162);
             this.dgvTurnos.TabIndex = 5;
             // 
             // UcTurno

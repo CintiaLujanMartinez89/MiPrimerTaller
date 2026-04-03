@@ -43,6 +43,8 @@ namespace MiPrimerTaller.Controles
 
         private void btnAgregarTurno_Click(object sender, EventArgs e)
         {
+            dgvTurnos.Visible = false;
+
             calendario.Visible = true;
             selectFechHora.Visible = true;
             btnCancelar.Visible = true;
@@ -85,8 +87,9 @@ namespace MiPrimerTaller.Controles
 
         private void btnModificarTurno_Click(object sender, EventArgs e)
         {
-          
-                calendario.Visible = true;
+            btnCancelar.Visible = false;
+            btnReservar.Visible = false;
+            calendario.Visible = true;
                 selectFechHora.Visible = true;
             dgvTurnos.Visible = true;
            // Cargar los días con turnos
@@ -129,6 +132,17 @@ namespace MiPrimerTaller.Controles
                                   .ToList();
 
            dgvTurnos.DataSource = turnosDelDia;
+        }
+
+        private void btnEliminarTurno_Click(object sender, EventArgs e)
+        {
+            btnCancelar.Visible = false;
+            btnReservar.Visible = false;
+            calendario.Visible = true;
+            selectFechHora.Visible = true;
+            dgvTurnos.Visible = true;
+            // Cargar los días con turnos
+            PintarDiasConTurnos();
         }
     }
 }
