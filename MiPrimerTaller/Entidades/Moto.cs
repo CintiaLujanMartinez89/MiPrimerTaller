@@ -9,12 +9,12 @@ namespace MiPrimerTaller.Entidades
     public class Moto
     {
         public string Patente { get; set; }
+
         public Cliente Cliente { get; set; }
 
         public string Marca { get; set; }
         public string Modelo { get; set; }
         public int KmInicial { get; set; }
-
-
+        public int ClienteId { get; internal set; }
     }
 }

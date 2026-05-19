@@ -33,9 +33,11 @@ namespace MiPrimerTaller.Controles
             this.btnListarCliente = new MiPrimerTaller.Controles.MenuButton();
             this.btnAgregarCliente = new MiPrimerTaller.Controles.MenuButton();
             this.btnModificarCliente = new MiPrimerTaller.Controles.MenuButton();
-            this.menuButton4 = new MiPrimerTaller.Controles.MenuButton();
             this.btnEliminarCliente = new MiPrimerTaller.Controles.MenuButton();
+            this.menuButton4 = new MiPrimerTaller.Controles.MenuButton();
+            this.DGVClientes = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVClientes)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -66,6 +68,7 @@ namespace MiPrimerTaller.Controles
             this.btnListarCliente.Text = "Mostrar Clientes";
             this.btnListarCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnListarCliente.UseVisualStyleBackColor = false;
+            this.btnListarCliente.Click += new System.EventHandler(this.btnListarCliente_Click);
             // 
             // btnAgregarCliente
             // 
@@ -82,6 +85,7 @@ namespace MiPrimerTaller.Controles
             this.btnAgregarCliente.Text = "Agregar Cliente";
             this.btnAgregarCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAgregarCliente.UseVisualStyleBackColor = false;
+            this.btnAgregarCliente.Click += new System.EventHandler(this.btnAgregarCliente_Click);
             // 
             // btnModificarCliente
             // 
@@ -98,22 +102,7 @@ namespace MiPrimerTaller.Controles
             this.btnModificarCliente.Text = "Modificar Cliente";
             this.btnModificarCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnModificarCliente.UseVisualStyleBackColor = false;
-            // 
-            // menuButton4
-            // 
-            this.menuButton4.BackColor = System.Drawing.Color.Transparent;
-            this.menuButton4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.menuButton4.FlatAppearance.BorderSize = 0;
-            this.menuButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.menuButton4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.menuButton4.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.menuButton4.Location = new System.Drawing.Point(3, 49);
-            this.menuButton4.Name = "menuButton4";
-            this.menuButton4.Size = new System.Drawing.Size(180, 40);
-            this.menuButton4.TabIndex = 3;
-            this.menuButton4.Text = "menuButton4";
-            this.menuButton4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.menuButton4.UseVisualStyleBackColor = false;
+            this.btnModificarCliente.Click += new System.EventHandler(this.btnModificarCliente_Click);
             // 
             // btnEliminarCliente
             // 
@@ -131,14 +120,40 @@ namespace MiPrimerTaller.Controles
             this.btnEliminarCliente.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnEliminarCliente.UseVisualStyleBackColor = false;
             // 
+            // menuButton4
+            // 
+            this.menuButton4.BackColor = System.Drawing.Color.Transparent;
+            this.menuButton4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.menuButton4.FlatAppearance.BorderSize = 0;
+            this.menuButton4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.menuButton4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.menuButton4.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.menuButton4.Location = new System.Drawing.Point(3, 49);
+            this.menuButton4.Name = "menuButton4";
+            this.menuButton4.Size = new System.Drawing.Size(180, 40);
+            this.menuButton4.TabIndex = 3;
+            this.menuButton4.Text = "menuButton4";
+            this.menuButton4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.menuButton4.UseVisualStyleBackColor = false;
+            // 
+            // DGVClientes
+            // 
+            this.DGVClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVClientes.Location = new System.Drawing.Point(11, 49);
+            this.DGVClientes.Name = "DGVClientes";
+            this.DGVClientes.Size = new System.Drawing.Size(614, 291);
+            this.DGVClientes.TabIndex = 1;
+            // 
             // UcCliente
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DGVClientes);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "UcCliente";
             this.Size = new System.Drawing.Size(638, 352);
             this.flowLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVClientes)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -151,5 +166,6 @@ namespace MiPrimerTaller.Controles
         private MenuButton btnModificarCliente;
         private MenuButton btnEliminarCliente;
         private MenuButton menuButton4;
+        private System.Windows.Forms.DataGridView DGVClientes;
     }
 }

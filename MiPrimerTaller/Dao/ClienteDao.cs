@@ -1,13 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
 using MiPrimerTaller.Entidades;
-using System.Collections.Generic;
 
-namespace MiPrimerTaller.Dao
+namespace MiPrimerTaller.DAOs
 {
-    class ClienteDao
+    public class ClienteDao
     {
-        private string connectionString = "Data Source=MotogarageMD.db;Version=3;";
+        private string connectionString = @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db;Version=3;";
 
         // Obtener todos los clientes
         public List<Cliente> ObtenerTodas()
@@ -29,8 +29,8 @@ namespace MiPrimerTaller.Dao
                             Dni = reader.GetInt32(0),
                             Nombre = reader.GetString(1),
                             Apellido = reader.GetString(2),
-                            Telefono = reader.GetString(3),
-                            Email = reader.GetString(4)
+                            Telefono = reader.IsDBNull(3) ? "" : reader.GetString(3),
+                            Email = reader.IsDBNull(4) ? "" : reader.GetString(4)
                         };
 
                         lista.Add(cliente);
@@ -47,8 +47,8 @@ namespace MiPrimerTaller.Dao
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "INSERT INTO Cliente (Dni, Nombre, Apellido, Telefono, Email) " +
-                             "VALUES (@Dni, @Nombre, @Apellido, @Telefono, @Email)";
+                string sql = @"INSERT INTO Cliente (Dni, Nombre, Apellido, Telefono, Email)
+                               VALUES (@Dni, @Nombre, @Apellido, @Telefono, @Email)";
 
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
@@ -69,8 +69,9 @@ namespace MiPrimerTaller.Dao
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "UPDATE Cliente SET Nombre = @Nombre, Apellido = @Apellido, " +
-                             "Telefono = @Telefono, Email = @Email WHERE Dni = @Dni";
+                string sql = @"UPDATE Cliente 
+                               SET Nombre=@Nombre, Apellido=@Apellido, Telefono=@Telefono, Email=@Email 
+                               WHERE Dni=@Dni";
 
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
@@ -85,9 +86,34 @@ namespace MiPrimerTaller.Dao
             }
         }
 
-        internal Cliente ObtenerPorId(int clienteId)
+        // Obtener cliente por DNI
+        public Cliente ObtenerPorId(int dni)
         {
-            throw new NotImplementedException();
+            using (var conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT Dni, Nombre, Apellido, Telefono, Email FROM Cliente WHERE Dni=@Dni";
+
+                using (var cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Dni", dni);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Cliente
+                            {
+                                Dni = reader.GetInt32(0),
+                                Nombre = reader.GetString(1),
+                                Apellido = reader.GetString(2),
+                                Telefono = reader.IsDBNull(3) ? "" : reader.GetString(3),
+                                Email = reader.IsDBNull(4) ? "" : reader.GetString(4)
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
         }
 
         // Eliminar un cliente
@@ -96,7 +122,7 @@ namespace MiPrimerTaller.Dao
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "DELETE FROM Cliente WHERE Dni = @Dni";
+                string sql = "DELETE FROM Cliente WHERE Dni=@Dni";
 
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {

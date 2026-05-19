@@ -30,9 +30,16 @@ namespace MiPrimerTaller.Formularios
         private void InitializeComponent()
         {
             this.panel2 = new System.Windows.Forms.Panel();
-            this.panelMain = new System.Windows.Forms.Panel();
+            this.lblFechaHora = new System.Windows.Forms.Label();
+            this.panelMain.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // panelMain
+            // 
+            this.panelMain.Controls.Add(this.lblFechaHora);
+            this.panelMain.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.panelMain.Size = new System.Drawing.Size(933, 588);
             // 
             // panel2
             // 
@@ -41,28 +48,29 @@ namespace MiPrimerTaller.Formularios
             this.panel2.Controls.Add(this.panelMain);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(800, 450);
+            this.panel2.Size = new System.Drawing.Size(933, 588);
             this.panel2.TabIndex = 2;
             // 
-            // panelMain
+            // lblFechaHora
             // 
-            this.panelMain.BackgroundImage = global::MiPrimerTaller.Properties.Resources.logoMD;
-            this.panelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelMain.Location = new System.Drawing.Point(0, 0);
-            this.panelMain.Name = "panelMain";
-            this.panelMain.Size = new System.Drawing.Size(800, 450);
-            this.panelMain.TabIndex = 0;
+            this.lblFechaHora.AutoSize = true;
+            this.lblFechaHora.Location = new System.Drawing.Point(287, 113);
+            this.lblFechaHora.Name = "lblFechaHora";
+            this.lblFechaHora.Size = new System.Drawing.Size(0, 19);
+            this.lblFechaHora.TabIndex = 0;
             // 
             // FormInicio
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(933, 588);
             this.Controls.Add(this.panel2);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormInicio";
-            this.Text = "MotoGarage MD";
+            this.panelMain.ResumeLayout(false);
+            this.panelMain.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -70,6 +78,6 @@ namespace MiPrimerTaller.Formularios
 
         #endregion
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.Label lblFechaHora;
     }
 }

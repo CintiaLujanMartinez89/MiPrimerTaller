@@ -12,5 +12,6 @@ namespace MiPrimerTaller.Entidades
         public string Nombre { get; set; }
 
         public int PrecioInicial { get; set; }
+    
     }
 }

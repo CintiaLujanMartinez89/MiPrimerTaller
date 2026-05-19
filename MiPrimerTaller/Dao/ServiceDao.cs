@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
 using MiPrimerTaller.Entidades;
 
-namespace MiPrimerTaller.Dao
+namespace MiPrimerTaller.DAOs
 {
-    class ServiceDao
+    public class ServiceDao
     {
-        private string connectionString = "Data Source=MotogarageMD.db;Version=3;";
+        private string connectionString = @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db;Version=3;";
 
-        // Obtener todos los servicios
-        public List<Service> ObtenerTodos()
+        public List<Service> ListarServicios()
         {
-            List<Service> lista = new List<Service>();
-
+            var servicios = new List<Service>();
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
@@ -24,62 +21,57 @@ namespace MiPrimerTaller.Dao
                 {
                     while (reader.Read())
                     {
-                        Service service = new Service
+                        servicios.Add(new Service
                         {
                             IdServicio = reader.GetInt32(0),
                             Nombre = reader.GetString(1),
                             PrecioInicial = reader.GetInt32(2)
-                        };
-                        lista.Add(service);
+                        });
                     }
                 }
             }
-
-            return lista;
+            return servicios;
         }
 
-        // Insertar un servicio
-        public void Insertar(Service service)
+        public void InsertarServicio(Service servicio)
         {
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "INSERT INTO Service (IdServicio, Nombre, PrecioInicial) " +
-                             "VALUES (@IdServicio, @Nombre, @PrecioInicial)";
+                string sql = "INSERT INTO Service (Nombre, PrecioInicial) VALUES (@Nombre, @PrecioInicial)";
 
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@IdServicio", service.IdServicio);
-                    cmd.Parameters.AddWithValue("@Nombre", service.Nombre);
-                    cmd.Parameters.AddWithValue("@PrecioInicial", service.PrecioInicial);
+                    cmd.Parameters.AddWithValue("@Nombre", servicio.Nombre);
+                    cmd.Parameters.AddWithValue("@PrecioInicial", servicio.PrecioInicial);
 
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        // Actualizar un servicio
-        public void Actualizar(Service service)
+        public void ModificarServicio(Service servicio)
         {
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "UPDATE Service SET Nombre = @Nombre, PrecioInicial = @PrecioInicial " +
-                             "WHERE IdServicio = @IdServicio";
+                string sql = @"UPDATE Service 
+                       SET Nombre = @Nombre, 
+                           PrecioInicial = @PrecioInicial
+                       WHERE IdServicio = @IdServicio";
 
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Nombre", service.Nombre);
-                    cmd.Parameters.AddWithValue("@PrecioInicial", service.PrecioInicial);
-                    cmd.Parameters.AddWithValue("@IdServicio", service.IdServicio);
+                    cmd.Parameters.AddWithValue("@Nombre", servicio.Nombre);
+                    cmd.Parameters.AddWithValue("@PrecioInicial", servicio.PrecioInicial);
+                    cmd.Parameters.AddWithValue("@IdServicio", servicio.IdServicio);
 
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        // Eliminar un servicio
-        public void Eliminar(int idServicio)
+        public void EliminarServicio(int idServicio)
         {
             using (var conn = new SQLiteConnection(connectionString))
             {
@@ -94,9 +86,32 @@ namespace MiPrimerTaller.Dao
             }
         }
 
-        internal Service ObtenerPorId(int servicioId)
+
+        public Service ObtenerPorId(int id)
         {
-            throw new NotImplementedException();
+            using (var conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT Id, Nombre, Precio FROM Service WHERE Id=@Id";
+                using (var cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Service
+                            {
+                                IdServicio = reader.GetInt32(0),
+                                Nombre = reader.GetString(1),
+                                PrecioInicial = reader.GetInt32(2)
+                            };
+
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using MiPrimerTaller.Data;
+﻿using MiPrimerTaller.DAOs;
+
+using MiPrimerTaller.Formularios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,15 +21,10 @@ namespace MiPrimerTaller.Controles
         {
             InitializeComponent();
 
-            calendario.Visible = false;
-            selectFechHora.Visible = false;
-            btnCancelar.Visible = false;
-            btnReservar.Visible = false;
-            dgvTurnos.Visible = false;
+            LimpiarPantalla();
 
-
-           // Mostrar fecha + hora, pero en minutos 00
-           selectFechHora.Format = DateTimePickerFormat.Custom;
+            // Mostrar fecha + hora, pero en minutos 00
+            selectFechHora.Format = DateTimePickerFormat.Custom;
             selectFechHora.CustomFormat = "HH:00"; // muestra 9:00, 10:00, etc.
             selectFechHora.ShowUpDown = true;
 
@@ -44,11 +41,25 @@ namespace MiPrimerTaller.Controles
         private void btnAgregarTurno_Click(object sender, EventArgs e)
         {
             dgvTurnos.Visible = false;
-
+            btnModificar.Visible = false;
             calendario.Visible = true;
             selectFechHora.Visible = true;
-            btnCancelar.Visible = true;
+           
             btnReservar.Visible = true;
+        }
+
+        private void LimpiarPantalla()
+        {
+            calendario.Visible = false;
+            selectFechHora.Visible = false;
+            btnEliminar.Visible = false;
+            btnReservar.Visible = false;
+            dgvTurnos.Visible = false;
+            btnModificar.Visible = false;
+
+            // Limpiar grilla
+            dgvTurnos.DataSource = null;
+            dgvTurnos.Rows.Clear();
         }
 
         private void selectFechHora_ValueChanged(object sender, EventArgs e)
@@ -87,10 +98,11 @@ namespace MiPrimerTaller.Controles
 
         private void btnModificarTurno_Click(object sender, EventArgs e)
         {
-            btnCancelar.Visible = false;
+            btnModificar.Visible = true;
+            btnEliminar.Visible = false;
             btnReservar.Visible = false;
             calendario.Visible = true;
-                selectFechHora.Visible = true;
+                selectFechHora.Visible = false;
             dgvTurnos.Visible = true;
            // Cargar los días con turnos
            PintarDiasConTurnos();
@@ -109,18 +121,17 @@ namespace MiPrimerTaller.Controles
         }
         private void btnReservar_Click(object sender, EventArgs e)
         {
-            ObtenerFechaHoraSeleccionada();
+            // Obtener la fecha y hora seleccionada
+            DateTime fechaHoraSeleccionada = ObtenerFechaHoraSeleccionada();
+
+            // Crear el formulario de reserva y pasársela
+            FormReservarTurno frm = new FormReservarTurno(fechaHoraSeleccionada);
+
+            // Mostrarlo como ventana modal
+            frm.ShowDialog();
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            calendario.Visible = false;
-            selectFechHora.Visible = false;
-            btnCancelar.Visible = false;
-            btnReservar.Visible = false;
 
-
-        }
 
         private void calendario_DateChanged(object sender, DateRangeEventArgs e)
         {
@@ -136,13 +147,28 @@ namespace MiPrimerTaller.Controles
 
         private void btnEliminarTurno_Click(object sender, EventArgs e)
         {
-            btnCancelar.Visible = false;
+            btnEliminar.Visible = true;
+            btnModificar.Visible = false;
+           
             btnReservar.Visible = false;
             calendario.Visible = true;
-            selectFechHora.Visible = true;
+            selectFechHora.Visible = false;
             dgvTurnos.Visible = true;
             // Cargar los días con turnos
             PintarDiasConTurnos();
         }
+
+        private void btnListarTurnos_Click(object sender, EventArgs e)
+        {
+            calendario.Visible = true;
+            selectFechHora.Visible = false;
+            btnEliminar.Visible = false;
+            btnReservar.Visible = false;
+            dgvTurnos.Visible = true;
+            btnModificar.Visible = false;
+
+        }
+
+       
     }
 }

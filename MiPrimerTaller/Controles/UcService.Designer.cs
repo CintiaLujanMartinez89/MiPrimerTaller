@@ -33,9 +33,11 @@ namespace MiPrimerTaller.Controles
             this.btnListarService = new MiPrimerTaller.Controles.MenuButton();
             this.btnAgregarService = new MiPrimerTaller.Controles.MenuButton();
             this.btnModificarService = new MiPrimerTaller.Controles.MenuButton();
-            this.menuButton1 = new MiPrimerTaller.Controles.MenuButton();
             this.btnEliminarService = new MiPrimerTaller.Controles.MenuButton();
+            this.menuButton1 = new MiPrimerTaller.Controles.MenuButton();
+            this.DGVService = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVService)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -65,6 +67,7 @@ namespace MiPrimerTaller.Controles
             this.btnListarService.Text = "Mostrar Services";
             this.btnListarService.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnListarService.UseVisualStyleBackColor = false;
+            this.btnListarService.Click += new System.EventHandler(this.btnListarService_Click);
             // 
             // btnAgregarService
             // 
@@ -81,6 +84,7 @@ namespace MiPrimerTaller.Controles
             this.btnAgregarService.Text = "Agregar Service";
             this.btnAgregarService.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAgregarService.UseVisualStyleBackColor = false;
+            this.btnAgregarService.Click += new System.EventHandler(this.btnAgregarService_Click);
             // 
             // btnModificarService
             // 
@@ -97,6 +101,24 @@ namespace MiPrimerTaller.Controles
             this.btnModificarService.Text = "Modificar Service";
             this.btnModificarService.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnModificarService.UseVisualStyleBackColor = false;
+            this.btnModificarService.Click += new System.EventHandler(this.btnModificarService_Click);
+            // 
+            // btnEliminarService
+            // 
+            this.btnEliminarService.BackColor = System.Drawing.Color.Transparent;
+            this.btnEliminarService.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnEliminarService.FlatAppearance.BorderSize = 0;
+            this.btnEliminarService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEliminarService.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnEliminarService.ForeColor = System.Drawing.Color.DarkSlateGray;
+            this.btnEliminarService.Location = new System.Drawing.Point(460, 3);
+            this.btnEliminarService.Name = "btnEliminarService";
+            this.btnEliminarService.Size = new System.Drawing.Size(146, 40);
+            this.btnEliminarService.TabIndex = 4;
+            this.btnEliminarService.Text = "Eliminar Service";
+            this.btnEliminarService.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnEliminarService.UseVisualStyleBackColor = false;
+            this.btnEliminarService.Click += new System.EventHandler(this.btnEliminarService_Click);
             // 
             // menuButton1
             // 
@@ -114,30 +136,24 @@ namespace MiPrimerTaller.Controles
             this.menuButton1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.menuButton1.UseVisualStyleBackColor = false;
             // 
-            // btnEliminarService
+            // DGVService
             // 
-            this.btnEliminarService.BackColor = System.Drawing.Color.Transparent;
-            this.btnEliminarService.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnEliminarService.FlatAppearance.BorderSize = 0;
-            this.btnEliminarService.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEliminarService.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnEliminarService.ForeColor = System.Drawing.Color.DarkSlateGray;
-            this.btnEliminarService.Location = new System.Drawing.Point(460, 3);
-            this.btnEliminarService.Name = "btnEliminarService";
-            this.btnEliminarService.Size = new System.Drawing.Size(146, 40);
-            this.btnEliminarService.TabIndex = 4;
-            this.btnEliminarService.Text = "Eliminar Service";
-            this.btnEliminarService.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnEliminarService.UseVisualStyleBackColor = false;
+            this.DGVService.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVService.Location = new System.Drawing.Point(17, 68);
+            this.DGVService.Name = "DGVService";
+            this.DGVService.Size = new System.Drawing.Size(592, 277);
+            this.DGVService.TabIndex = 1;
             // 
             // UcService
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DGVService);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "UcService";
             this.Size = new System.Drawing.Size(630, 355);
             this.flowLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVService)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -150,5 +166,6 @@ namespace MiPrimerTaller.Controles
         private MenuButton btnModificarService;
         private MenuButton btnEliminarService;
         private MenuButton menuButton1;
+        private System.Windows.Forms.DataGridView DGVService;
     }
 }

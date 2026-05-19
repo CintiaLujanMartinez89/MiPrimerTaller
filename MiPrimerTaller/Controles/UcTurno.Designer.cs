@@ -36,9 +36,10 @@ namespace MiPrimerTaller.Controles
             this.btnEliminarTurno = new MiPrimerTaller.Controles.MenuButton();
             this.calendario = new System.Windows.Forms.MonthCalendar();
             this.selectFechHora = new System.Windows.Forms.DateTimePicker();
-            this.btnCancelar = new System.Windows.Forms.Button();
             this.btnReservar = new System.Windows.Forms.Button();
             this.dgvTurnos = new System.Windows.Forms.DataGridView();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnos)).BeginInit();
             this.SuspendLayout();
@@ -69,6 +70,7 @@ namespace MiPrimerTaller.Controles
             this.btnListarTurnos.Text = "Mostrar Turnos";
             this.btnListarTurnos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnListarTurnos.UseVisualStyleBackColor = false;
+            this.btnListarTurnos.Click += new System.EventHandler(this.btnListarTurnos_Click);
             // 
             // btnAgregarTurno
             // 
@@ -135,16 +137,6 @@ namespace MiPrimerTaller.Controles
             this.selectFechHora.Size = new System.Drawing.Size(200, 20);
             this.selectFechHora.TabIndex = 2;
             // 
-            // btnCancelar
-            // 
-            this.btnCancelar.Location = new System.Drawing.Point(318, 291);
-            this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(75, 23);
-            this.btnCancelar.TabIndex = 3;
-            this.btnCancelar.Text = "Cancelar";
-            this.btnCancelar.UseVisualStyleBackColor = true;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
-            // 
             // btnReservar
             // 
             this.btnReservar.Location = new System.Drawing.Point(145, 291);
@@ -164,18 +156,38 @@ namespace MiPrimerTaller.Controles
             this.dgvTurnos.Size = new System.Drawing.Size(155, 162);
             this.dgvTurnos.TabIndex = 5;
             // 
+            // btnEliminar
+            // 
+            this.btnEliminar.Location = new System.Drawing.Point(286, 291);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(75, 23);
+            this.btnEliminar.TabIndex = 6;
+            this.btnEliminar.Text = "Eliminar";
+            this.btnEliminar.UseVisualStyleBackColor = true;
+            // 
+            // btnModificar
+            // 
+            this.btnModificar.Location = new System.Drawing.Point(418, 290);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(75, 23);
+            this.btnModificar.TabIndex = 7;
+            this.btnModificar.Text = "Modificar";
+            this.btnModificar.UseVisualStyleBackColor = true;
+            // 
             // UcTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnModificar);
+            this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.dgvTurnos);
             this.Controls.Add(this.btnReservar);
-            this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.selectFechHora);
             this.Controls.Add(this.calendario);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "UcTurno";
             this.Size = new System.Drawing.Size(609, 335);
+       
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnos)).EndInit();
             this.ResumeLayout(false);
@@ -191,8 +203,9 @@ namespace MiPrimerTaller.Controles
         private MenuButton btnEliminarTurno;
         private System.Windows.Forms.MonthCalendar calendario;
         private System.Windows.Forms.DateTimePicker selectFechHora;
-        private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Button btnReservar;
         private System.Windows.Forms.DataGridView dgvTurnos;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Button btnModificar;
     }
 }
