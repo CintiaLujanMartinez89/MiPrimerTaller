@@ -1,50 +1,124 @@
 ﻿using MiPrimerTaller.DAOs;
-
 using MiPrimerTaller.Formularios;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace MiPrimerTaller.Controles
 {
     public partial class UcTurno : UserControl
     {
- 
-
         public UcTurno()
         {
             InitializeComponent();
-
             LimpiarPantalla();
 
-            // Mostrar fecha + hora, pero en minutos 00
+            // Configurar selector de hora
             selectFechHora.Format = DateTimePickerFormat.Custom;
-            selectFechHora.CustomFormat = "HH:00"; // muestra 9:00, 10:00, etc.
+            selectFechHora.CustomFormat = "HH:00";
             selectFechHora.ShowUpDown = true;
-
-            // Valor inicial: 9:00 del día actual
             selectFechHora.Value = DateTime.Today.AddHours(9);
 
-            // Asociar evento
             selectFechHora.ValueChanged += selectFechHora_ValueChanged;
 
+            // Configurar estilo de la grilla
+            ConfigurarGrilla();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if (dgvTurnos.CurrentRow != null)
+            {
+                // Obtener el turno seleccionado
+                DateTime fechaHora = DateTime.Parse(dgvTurnos.CurrentRow.Cells["Hora"].Value.ToString());
+                TurnoDao dao = new TurnoDao();
+
+                // Buscar y eliminar
+                var turno = dao.ListarTurnos().FirstOrDefault(t => t.FechaHora.ToString("HH:mm") == fechaHora.ToString("HH:mm"));
+                if (turno != null)
+                {
+                    dao.EliminarTurno(turno.Id);
+                    MessageBox.Show("Turno eliminado correctamente.");
+                    calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
+                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un turno de la lista para eliminar.");
+            }
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            if (dgvTurnos.CurrentRow != null)
+            {
+                // Obtener el turno seleccionado
+                DateTime fechaHora = DateTime.Parse(dgvTurnos.CurrentRow.Cells["Hora"].Value.ToString());
+                TurnoDao dao = new TurnoDao();
+
+                var turno = dao.ListarTurnos().FirstOrDefault(t => t.FechaHora.ToString("HH:mm") == fechaHora.ToString("HH:mm"));
+                if (turno != null)
+                {
+                    FormModificarTurno frm = new FormModificarTurno(turno);
+                    frm.ShowDialog();
+
+                    // Refrescar la grilla
+                    calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
+                }
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un turno de la lista para modificar.");
+            }
+        }
 
 
+        private void ConfigurarGrilla()
+        {
+            dgvTurnos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvTurnos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvTurnos.MultiSelect = false;
+            dgvTurnos.ReadOnly = true;
+            dgvTurnos.RowHeadersVisible = false;
+            dgvTurnos.AllowUserToAddRows = false;
+            dgvTurnos.AllowUserToDeleteRows = false;
+            dgvTurnos.AllowUserToResizeRows = false;
+
+            dgvTurnos.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dgvTurnos.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dgvTurnos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+            dgvTurnos.CellFormatting += dgvTurnos_CellFormatting;
+        }
+
+        private void dgvTurnos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dgvTurnos.Columns[e.ColumnIndex].Name == "Estado" && e.Value != null)
+            {
+                string estado = e.Value.ToString();
+
+                if (estado.Equals("Confirmado", StringComparison.OrdinalIgnoreCase))
+                {
+                    dgvTurnos.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
+                }
+                else if (estado.Equals("Pendiente", StringComparison.OrdinalIgnoreCase))
+                {
+                    dgvTurnos.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Khaki;
+                }
+                else if (estado.Equals("Cancelado", StringComparison.OrdinalIgnoreCase))
+                {
+                    dgvTurnos.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
+                }
+            }
         }
 
         private void btnAgregarTurno_Click(object sender, EventArgs e)
         {
             dgvTurnos.Visible = false;
-            btnModificar.Visible = false;
+            btnModificarTurno.Visible = false;
             calendario.Visible = true;
             selectFechHora.Visible = true;
-           
             btnReservar.Visible = true;
         }
 
@@ -52,14 +126,14 @@ namespace MiPrimerTaller.Controles
         {
             calendario.Visible = false;
             selectFechHora.Visible = false;
-            btnEliminar.Visible = false;
+            btnEliminarTurno.Visible = false;
             btnReservar.Visible = false;
             dgvTurnos.Visible = false;
-            btnModificar.Visible = false;
+            btnModificarTurno.Visible = false;
 
-            // Limpiar grilla
             dgvTurnos.DataSource = null;
-            dgvTurnos.Rows.Clear();
+            if (dgvTurnos.Rows.Count > 0)
+                dgvTurnos.Rows.Clear();
         }
 
         private void selectFechHora_ValueChanged(object sender, EventArgs e)
@@ -72,89 +146,94 @@ namespace MiPrimerTaller.Controles
             if (valor.Hour > 17)
                 selectFechHora.Value = new DateTime(valor.Year, valor.Month, valor.Day, 17, 0, 0);
 
-            // Normalizar minutos a 00
             if (valor.Minute != 0)
                 selectFechHora.Value = new DateTime(valor.Year, valor.Month, valor.Day, valor.Hour, 0, 0);
         }
 
         public DateTime ObtenerFechaHoraSeleccionada()
         {
-            // Fecha elegida en el calendario
-            DateTime fecha = calendario.SelectionStart; 
+            DateTime fecha = calendario.SelectionStart;
+            DateTime hora = selectFechHora.Value;
 
-            // Hora elegida en el DateTimePicker
-            DateTime hora = selectFechHora.Value; 
-
-            // Combinar fecha y hora en un solo DateTime
-            return new DateTime(
-                fecha.Year,
-                fecha.Month,
-                fecha.Day,
-                hora.Hour,
-                hora.Minute,
-                0
-            );
+            return new DateTime(fecha.Year, fecha.Month, fecha.Day, hora.Hour, hora.Minute, 0);
         }
 
         private void btnModificarTurno_Click(object sender, EventArgs e)
         {
-            btnModificar.Visible = true;
-            btnEliminar.Visible = false;
+            btnModificarTurno.Visible = true;
+            btnEliminarTurno.Visible = false;
             btnReservar.Visible = false;
             calendario.Visible = true;
-                selectFechHora.Visible = false;
+            selectFechHora.Visible = false;
             dgvTurnos.Visible = true;
-           // Cargar los días con turnos
-           PintarDiasConTurnos();
-          
+
+            PintarDiasConTurnos();
         }
+
         private void PintarDiasConTurnos()
         {
             TurnoDao dao = new TurnoDao();
             var turnos = dao.ListarTurnos();
 
-            // Obtener solo las fechas (sin hora)
             var fechas = turnos.Select(t => t.FechaHora.Date).Distinct().ToArray();
 
-            // Marcar esas fechas en negrita en el calendario
             calendario.BoldedDates = fechas;
+            calendario.UpdateBoldedDates();
         }
+
         private void btnReservar_Click(object sender, EventArgs e)
         {
-            // Obtener la fecha y hora seleccionada
             DateTime fechaHoraSeleccionada = ObtenerFechaHoraSeleccionada();
+            TurnoDao dao = new TurnoDao();
 
-            // Crear el formulario de reserva y pasársela
+            var turnoExistente = dao.ListarTurnos()
+                                    .FirstOrDefault(t => t.FechaHora == fechaHoraSeleccionada);
+
+            if (turnoExistente != null)
+            {
+                MessageBox.Show("Ya existe un turno asignado en esa fecha y hora.",
+                                "Turno ocupado",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+                return;
+            }
+
             FormReservarTurno frm = new FormReservarTurno(fechaHoraSeleccionada);
-
-            // Mostrarlo como ventana modal
             frm.ShowDialog();
         }
 
-
-
+        // ✅ Solo se llena la grilla cuando seleccionás un día
         private void calendario_DateChanged(object sender, DateRangeEventArgs e)
         {
             DateTime fechaSeleccionada = e.Start.Date;
-
             TurnoDao dao = new TurnoDao();
+
             var turnosDelDia = dao.ListarTurnos()
                                   .Where(t => t.FechaHora.Date == fechaSeleccionada)
+                                  .Select(t => new
+                                  {
+                                      Hora = t.FechaHora.ToString("HH:mm"),
+                                      Cliente = t.Cliente.Nombre + " " + t.Cliente.Apellido,
+                                      Moto = t.Moto.Patente + " (" + t.Moto.Modelo + ")",
+                                      Servicio = t.Servicio.Nombre,
+                                      Estado = t.Estado,
+                                      Observaciones = t.Observaciones
+                                  })
                                   .ToList();
 
-           dgvTurnos.DataSource = turnosDelDia;
+            dgvTurnos.DataSource = turnosDelDia;
+            dgvTurnos.Visible = true;
         }
 
         private void btnEliminarTurno_Click(object sender, EventArgs e)
         {
-            btnEliminar.Visible = true;
-            btnModificar.Visible = false;
-           
+            btnEliminarTurno.Visible = true;
+            btnModificarTurno.Visible = false;
             btnReservar.Visible = false;
             calendario.Visible = true;
             selectFechHora.Visible = false;
             dgvTurnos.Visible = true;
-            // Cargar los días con turnos
+
             PintarDiasConTurnos();
         }
 
@@ -162,13 +241,13 @@ namespace MiPrimerTaller.Controles
         {
             calendario.Visible = true;
             selectFechHora.Visible = false;
-            btnEliminar.Visible = false;
+            btnEliminarTurno.Visible = false;
             btnReservar.Visible = false;
             dgvTurnos.Visible = true;
-            btnModificar.Visible = false;
+            btnModificarTurno.Visible = false;
 
+            // Ya no llenamos todos los turnos aquí, solo pintamos los días
+            PintarDiasConTurnos();
         }
-
-       
     }
 }

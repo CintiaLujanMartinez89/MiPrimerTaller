@@ -1,17 +1,9 @@
-﻿
-namespace MiPrimerTaller.Controles
+﻿namespace MiPrimerTaller.Controles
 {
     partial class UcTurno
     {
-        /// <summary> 
-        /// Variable del diseñador necesaria.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Limpiar los recursos que se estén usando.
-        /// </summary>
-        /// <param name="disposing">true si los recursos administrados se deben desechar; false en caso contrario.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -23,10 +15,6 @@ namespace MiPrimerTaller.Controles
 
         #region Código generado por el Diseñador de componentes
 
-        /// <summary> 
-        /// Método necesario para admitir el Diseñador. No se puede modificar
-        /// el contenido de este método con el editor de código.
-        /// </summary>
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -57,9 +45,6 @@ namespace MiPrimerTaller.Controles
             // 
             // btnListarTurnos
             // 
-            this.btnListarTurnos.BackColor = System.Drawing.Color.Transparent;
-            this.btnListarTurnos.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnListarTurnos.FlatAppearance.BorderSize = 0;
             this.btnListarTurnos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnListarTurnos.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnListarTurnos.ForeColor = System.Drawing.Color.DarkSlateGray;
@@ -74,9 +59,6 @@ namespace MiPrimerTaller.Controles
             // 
             // btnAgregarTurno
             // 
-            this.btnAgregarTurno.BackColor = System.Drawing.Color.Transparent;
-            this.btnAgregarTurno.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAgregarTurno.FlatAppearance.BorderSize = 0;
             this.btnAgregarTurno.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAgregarTurno.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnAgregarTurno.ForeColor = System.Drawing.Color.DarkSlateGray;
@@ -91,9 +73,6 @@ namespace MiPrimerTaller.Controles
             // 
             // btnModificarTurno
             // 
-            this.btnModificarTurno.BackColor = System.Drawing.Color.Transparent;
-            this.btnModificarTurno.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnModificarTurno.FlatAppearance.BorderSize = 0;
             this.btnModificarTurno.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnModificarTurno.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnModificarTurno.ForeColor = System.Drawing.Color.DarkSlateGray;
@@ -108,9 +87,6 @@ namespace MiPrimerTaller.Controles
             // 
             // btnEliminarTurno
             // 
-            this.btnEliminarTurno.BackColor = System.Drawing.Color.Transparent;
-            this.btnEliminarTurno.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnEliminarTurno.FlatAppearance.BorderSize = 0;
             this.btnEliminarTurno.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnEliminarTurno.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.btnEliminarTurno.ForeColor = System.Drawing.Color.DarkSlateGray;
@@ -125,10 +101,11 @@ namespace MiPrimerTaller.Controles
             // 
             // calendario
             // 
-            this.calendario.Location = new System.Drawing.Point(145, 73);
+            this.calendario.Location = new System.Drawing.Point(20, 73);
             this.calendario.MaxSelectionCount = 1;
             this.calendario.Name = "calendario";
             this.calendario.TabIndex = 1;
+            this.calendario.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.calendario_DateChanged);
             // 
             // selectFechHora
             // 
@@ -141,7 +118,7 @@ namespace MiPrimerTaller.Controles
             // 
             this.btnReservar.Location = new System.Drawing.Point(145, 291);
             this.btnReservar.Name = "btnReservar";
-            this.btnReservar.Size = new System.Drawing.Size(75, 23);
+            this.btnReservar.Size = new System.Drawing.Size(100, 23);
             this.btnReservar.TabIndex = 4;
             this.btnReservar.Text = "Reservar Turno";
             this.btnReservar.UseVisualStyleBackColor = true;
@@ -151,29 +128,29 @@ namespace MiPrimerTaller.Controles
             // 
             this.dgvTurnos.BackgroundColor = System.Drawing.SystemColors.ControlLight;
             this.dgvTurnos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvTurnos.Location = new System.Drawing.Point(396, 73);
+            this.dgvTurnos.Location = new System.Drawing.Point(286, 73);
             this.dgvTurnos.Name = "dgvTurnos";
-            this.dgvTurnos.Size = new System.Drawing.Size(155, 162);
+            this.dgvTurnos.Size = new System.Drawing.Size(313, 162);
             this.dgvTurnos.TabIndex = 5;
             // 
             // btnEliminar
-            // 
             this.btnEliminar.Location = new System.Drawing.Point(286, 291);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(75, 23);
             this.btnEliminar.TabIndex = 6;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = true;
-            // 
+            this.btnEliminar.Click += new System.EventHandler(this.btnEliminar_Click);
+
             // btnModificar
-            // 
-            this.btnModificar.Location = new System.Drawing.Point(418, 290);
+            this.btnModificar.Location = new System.Drawing.Point(418, 291);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(75, 23);
             this.btnModificar.TabIndex = 7;
             this.btnModificar.Text = "Modificar";
             this.btnModificar.UseVisualStyleBackColor = true;
-            // 
+            this.btnModificar.Click += new System.EventHandler(this.btnModificar_Click);
+
             // UcTurno
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -187,11 +164,9 @@ namespace MiPrimerTaller.Controles
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "UcTurno";
             this.Size = new System.Drawing.Size(609, 335);
-       
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvTurnos)).EndInit();
             this.ResumeLayout(false);
-
         }
 
         #endregion

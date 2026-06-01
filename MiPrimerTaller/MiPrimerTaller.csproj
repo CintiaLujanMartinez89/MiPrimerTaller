@@ -93,6 +93,12 @@
     <Compile Include="Formularios\FormAgregarCliente.Designer.cs">
       <DependentUpon>FormAgregarCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\FormAgregarMoto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormAgregarMoto.Designer.cs">
+      <DependentUpon>FormAgregarMoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\FormAgregarService.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -123,6 +129,12 @@
     <Compile Include="Formularios\FormModificarService.Designer.cs">
       <DependentUpon>FormModificarService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\FormModificarTurno.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormModificarTurno.Designer.cs">
+      <DependentUpon>FormModificarTurno.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\FormReservarTurno.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FormInicio.resx">
       <DependentUpon>FormInicio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formularios\FormModificarTurno.resx">
+      <DependentUpon>FormModificarTurno.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FormReservarTurno.resx">
       <DependentUpon>FormReservarTurno.cs</DependentUpon>

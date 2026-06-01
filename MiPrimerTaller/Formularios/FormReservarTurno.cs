@@ -23,7 +23,6 @@ namespace MiPrimerTaller.Formularios
             fechaHoraSeleccionada = fechaHora;
             InitializeComponent();
             CrearFormulario();
-           
         }
 
         private void CrearFormulario()
@@ -34,7 +33,7 @@ namespace MiPrimerTaller.Formularios
 
             // Combo Patente
             var lblPatente = new Label { Left = 50, Top = 50, Text = "Patente:" };
-            cmbPatente = new ComboBox { Left = 150, Top = 50, Width = 200 };
+            cmbPatente = new ComboBox { Left = 150, Top = 50, Width = 200, DropDownStyle = ComboBoxStyle.DropDownList };
             cmbPatente.SelectedIndexChanged += CmbPatente_SelectedIndexChanged;
 
             // Cliente
@@ -47,11 +46,11 @@ namespace MiPrimerTaller.Formularios
 
             // Servicio
             var lblServicio = new Label { Left = 50, Top = 170, Text = "Servicio:" };
-            cmbServicio = new ComboBox { Left = 150, Top = 170, Width = 200 };
+            cmbServicio = new ComboBox { Left = 150, Top = 170, Width = 200, DropDownStyle = ComboBoxStyle.DropDownList };
 
             // Estado
             var lblEstado = new Label { Left = 50, Top = 210, Text = "Estado:" };
-            cmbEstado = new ComboBox { Left = 150, Top = 210, Width = 200 };
+            cmbEstado = new ComboBox { Left = 150, Top = 210, Width = 200, DropDownStyle = ComboBoxStyle.DropDownList };
             cmbEstado.Items.Add("Pendiente");
             cmbEstado.Items.Add("Confirmado");
 
@@ -88,7 +87,6 @@ namespace MiPrimerTaller.Formularios
             CargarDatos();
         }
 
-
         private void CargarDatos()
         {
             // Cargar patentes desde la BD
@@ -113,31 +111,38 @@ namespace MiPrimerTaller.Formularios
                 if (moto != null)
                 {
                     txtMoto.Text = moto.Modelo;
-                    txtCliente.Text = moto.Cliente.Nombre + " " + moto.Cliente.Apellido;
+                    txtCliente.Text = moto.Cliente.Nombre + " " + moto.Cliente.Apellido; // mostramos nombre y apellido
                 }
             }
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)
         {
-            string patente = cmbPatente.SelectedValue.ToString();
-            Moto moto = new MotoDao().BuscarPorPatente(patente);
-            Cliente cliente = moto.Cliente;
-
-            int servicioId = (int)cmbServicio.SelectedValue;
-            Service servicio = new ServiceDao().ObtenerPorId(servicioId);
-
-            string estado = cmbEstado.Text;
-            string observaciones = txtObservaciones.Text;
-
-            Turno turno = new Turno(fechaHoraSeleccionada, cliente, moto, servicio, estado)
+            try
             {
-                Observaciones = observaciones
-            };
+                string patente = cmbPatente.SelectedValue.ToString();
+                Moto moto = new MotoDao().BuscarPorPatente(patente);
+                Cliente cliente = moto.Cliente;
 
-            new TurnoDao().InsertarTurno(turno);
-            MessageBox.Show("Turno reservado correctamente.");
-            this.Close();
+                int servicioId = (int)cmbServicio.SelectedValue;
+                Service servicio = new ServiceDao().ObtenerPorId(servicioId);
+
+                string estado = cmbEstado.Text;
+                string observaciones = txtObservaciones.Text;
+
+                Turno turno = new Turno(fechaHoraSeleccionada, cliente, moto, servicio, estado)
+                {
+                    Observaciones = observaciones
+                };
+
+                new TurnoDao().InsertarTurno(turno);
+                MessageBox.Show("Turno reservado correctamente.");
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al reservar turno: " + ex.Message);
+            }
         }
     }
 }

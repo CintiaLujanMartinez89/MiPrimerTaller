@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SQLite; // Usando SQLite
+using System.Data.SQLite;
 using MiPrimerTaller.Entidades;
 
 namespace MiPrimerTaller.DAOs
@@ -11,7 +11,6 @@ namespace MiPrimerTaller.DAOs
 
         public MotoDao()
         {
-            // Inicializamos la cadena de conexión directamente
             connectionString = @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db;Version=3;";
         }
 
@@ -152,36 +151,5 @@ namespace MiPrimerTaller.DAOs
                 }
             }
         }
-
-        public Moto ObtenerPorId(int id)
-        {
-            using (var conn = new SQLiteConnection(connectionString))
-            {
-                conn.Open();
-                string sql = "SELECT Id, Patente, Modelo, ClienteId FROM Motos WHERE Id = @id";
-
-                using (var cmd = new SQLiteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Moto
-                            {
-                              
-                                Patente = reader.GetString(1),
-                                Modelo = reader.GetString(2),
-                                ClienteId = reader.GetInt32(3)
-                            };
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
-
     }
 }

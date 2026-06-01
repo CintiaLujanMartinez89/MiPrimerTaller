@@ -30,11 +30,13 @@ namespace MiPrimerTaller.Controles
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.DGVmotos = new System.Windows.Forms.DataGridView();
             this.btnListarMotos = new MiPrimerTaller.Controles.MenuButton();
             this.btnAgregarMoto = new MiPrimerTaller.Controles.MenuButton();
             this.btnModificarMoto = new MiPrimerTaller.Controles.MenuButton();
             this.btnEliminarMoto = new MiPrimerTaller.Controles.MenuButton();
             this.flowLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVmotos)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -47,6 +49,14 @@ namespace MiPrimerTaller.Controles
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(599, 45);
             this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // DGVmotos
+            // 
+            this.DGVmotos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVmotos.Location = new System.Drawing.Point(14, 59);
+            this.DGVmotos.Name = "DGVmotos";
+            this.DGVmotos.Size = new System.Drawing.Size(569, 235);
+            this.DGVmotos.TabIndex = 1;
             // 
             // btnListarMotos
             // 
@@ -63,6 +73,7 @@ namespace MiPrimerTaller.Controles
             this.btnListarMotos.Text = "Mostrar Motos";
             this.btnListarMotos.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnListarMotos.UseVisualStyleBackColor = false;
+            this.btnListarMotos.Click += new System.EventHandler(this.btnListarMotos_Click);
             // 
             // btnAgregarMoto
             // 
@@ -79,6 +90,7 @@ namespace MiPrimerTaller.Controles
             this.btnAgregarMoto.Text = "Agregar Moto";
             this.btnAgregarMoto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAgregarMoto.UseVisualStyleBackColor = false;
+            this.btnAgregarMoto.Click += new System.EventHandler(this.btnAgregarMoto_Click);
             // 
             // btnModificarMoto
             // 
@@ -116,10 +128,12 @@ namespace MiPrimerTaller.Controles
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.DGVmotos);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Name = "UcMoto";
             this.Size = new System.Drawing.Size(606, 305);
             this.flowLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVmotos)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -131,5 +145,6 @@ namespace MiPrimerTaller.Controles
         private MenuButton btnAgregarMoto;
         private MenuButton btnModificarMoto;
         private MenuButton btnEliminarMoto;
+        private System.Windows.Forms.DataGridView DGVmotos;
     }
 }

@@ -8,6 +8,7 @@ namespace MiPrimerTaller.DAOs
     {
         private string connectionString = @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db;Version=3;";
 
+        // Listar todos los servicios
         public List<Service> ListarServicios()
         {
             var servicios = new List<Service>();
@@ -33,6 +34,7 @@ namespace MiPrimerTaller.DAOs
             return servicios;
         }
 
+        // Insertar servicio
         public void InsertarServicio(Service servicio)
         {
             using (var conn = new SQLiteConnection(connectionString))
@@ -50,15 +52,16 @@ namespace MiPrimerTaller.DAOs
             }
         }
 
+        // Modificar servicio
         public void ModificarServicio(Service servicio)
         {
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
                 string sql = @"UPDATE Service 
-                       SET Nombre = @Nombre, 
-                           PrecioInicial = @PrecioInicial
-                       WHERE IdServicio = @IdServicio";
+                               SET Nombre = @Nombre, 
+                                   PrecioInicial = @PrecioInicial
+                               WHERE IdServicio = @IdServicio";
 
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
@@ -71,6 +74,7 @@ namespace MiPrimerTaller.DAOs
             }
         }
 
+        // Eliminar servicio
         public void EliminarServicio(int idServicio)
         {
             using (var conn = new SQLiteConnection(connectionString))
@@ -86,16 +90,18 @@ namespace MiPrimerTaller.DAOs
             }
         }
 
-
-        public Service ObtenerPorId(int id)
+        // Obtener servicio por Id
+        public Service ObtenerPorId(int idServicio)
         {
             using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "SELECT Id, Nombre, Precio FROM Service WHERE Id=@Id";
+                string sql = "SELECT IdServicio, Nombre, PrecioInicial FROM Service WHERE IdServicio=@IdServicio";
+
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@IdServicio", idServicio);
+
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
@@ -106,7 +112,6 @@ namespace MiPrimerTaller.DAOs
                                 Nombre = reader.GetString(1),
                                 PrecioInicial = reader.GetInt32(2)
                             };
-
                         }
                     }
                 }
