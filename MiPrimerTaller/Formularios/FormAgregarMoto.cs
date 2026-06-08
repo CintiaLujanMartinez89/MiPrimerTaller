@@ -69,10 +69,10 @@ namespace MiPrimerTaller.Formularios
 
         private void CargarClientes()
         {
-            var clientes = new ClienteDao().ObtenerTodas(); // tu ClienteDao debe tener Listar()
+            var clientes = new ClienteDao().ObtenerTodas(); // mejor usar Listar
             cmbClientes.DataSource = clientes;
-            cmbClientes.DisplayMember = "NombreCompleto"; // propiedad calculada en Cliente
-            cmbClientes.ValueMember = "Dni";
+            cmbClientes.DisplayMember = "NombreCompletoConDni"; //  muestra Nombre + Apellido + DNI
+            cmbClientes.ValueMember = "Dni"; //  el valor real sigue siendo el DNI
         }
 
         private void BtnGuardar_Click(object sender, EventArgs e)

@@ -30,11 +30,11 @@ namespace MiPrimerTaller.Controles
         private void InitializeComponent()
         {
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.DGVmotos = new System.Windows.Forms.DataGridView();
             this.btnListarMotos = new MiPrimerTaller.Controles.MenuButton();
             this.btnAgregarMoto = new MiPrimerTaller.Controles.MenuButton();
             this.btnModificarMoto = new MiPrimerTaller.Controles.MenuButton();
             this.btnEliminarMoto = new MiPrimerTaller.Controles.MenuButton();
+            this.DGVmotos = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DGVmotos)).BeginInit();
             this.SuspendLayout();
@@ -49,14 +49,6 @@ namespace MiPrimerTaller.Controles
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(599, 45);
             this.flowLayoutPanel1.TabIndex = 0;
-            // 
-            // DGVmotos
-            // 
-            this.DGVmotos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DGVmotos.Location = new System.Drawing.Point(14, 59);
-            this.DGVmotos.Name = "DGVmotos";
-            this.DGVmotos.Size = new System.Drawing.Size(569, 235);
-            this.DGVmotos.TabIndex = 1;
             // 
             // btnListarMotos
             // 
@@ -107,6 +99,7 @@ namespace MiPrimerTaller.Controles
             this.btnModificarMoto.Text = "Modificar Moto";
             this.btnModificarMoto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnModificarMoto.UseVisualStyleBackColor = false;
+            this.btnModificarMoto.Click += new System.EventHandler(this.btnModificarMoto_Click);
             // 
             // btnEliminarMoto
             // 
@@ -123,6 +116,14 @@ namespace MiPrimerTaller.Controles
             this.btnEliminarMoto.Text = "Eliminar Moto";
             this.btnEliminarMoto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnEliminarMoto.UseVisualStyleBackColor = false;
+            // 
+            // DGVmotos
+            // 
+            this.DGVmotos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVmotos.Location = new System.Drawing.Point(14, 59);
+            this.DGVmotos.Name = "DGVmotos";
+            this.DGVmotos.Size = new System.Drawing.Size(569, 235);
+            this.DGVmotos.TabIndex = 1;
             // 
             // UcMoto
             // 

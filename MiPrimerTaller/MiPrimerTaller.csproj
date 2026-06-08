@@ -73,6 +73,12 @@
     <Compile Include="Controles\UcService.Designer.cs">
       <DependentUpon>UcService.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controles\UcTurnoCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controles\UcTurnoCard.Designer.cs">
+      <DependentUpon>UcTurnoCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controles\UcTurno.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -123,6 +129,12 @@
     <Compile Include="Formularios\FormModificarCliente.Designer.cs">
       <DependentUpon>FormModificarCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formularios\FormModificarMoto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formularios\FormModificarMoto.Designer.cs">
+      <DependentUpon>FormModificarMoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formularios\FormModificarService.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,6 +166,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controles\UcTurno.resx">
       <DependentUpon>UcTurno.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controles\UcTurnoCard.resx">
+      <DependentUpon>UcTurnoCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formularios\FormBase.resx">
       <DependentUpon>FormBase.cs</DependentUpon>

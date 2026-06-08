@@ -16,5 +16,17 @@ namespace MiPrimerTaller.Entidades
         public string Telefono { get; set; }
 
         public string Email { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Nombre} {Apellido}";
+        }
+        public string NombreCompletoConDni
+        {
+            get { return $"{Nombre} {Apellido} - DNI: {Dni}"; }
+        }
+
     }
+
+
 }

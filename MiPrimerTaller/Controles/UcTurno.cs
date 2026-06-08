@@ -4,11 +4,15 @@ using System;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using MiPrimerTaller.Entidades;
 
 namespace MiPrimerTaller.Controles
 {
     public partial class UcTurno : UserControl
     {
+        private Panel tarjetaSeleccionada;
+
         public UcTurno()
         {
             InitializeComponent();
@@ -22,118 +26,17 @@ namespace MiPrimerTaller.Controles
 
             selectFechHora.ValueChanged += selectFechHora_ValueChanged;
 
-            // Configurar estilo de la grilla
-            ConfigurarGrilla();
-        }
-
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            if (dgvTurnos.CurrentRow != null)
-            {
-                // Obtener el turno seleccionado
-                DateTime fechaHora = DateTime.Parse(dgvTurnos.CurrentRow.Cells["Hora"].Value.ToString());
-                TurnoDao dao = new TurnoDao();
-
-                // Buscar y eliminar
-                var turno = dao.ListarTurnos().FirstOrDefault(t => t.FechaHora.ToString("HH:mm") == fechaHora.ToString("HH:mm"));
-                if (turno != null)
-                {
-                    dao.EliminarTurno(turno.Id);
-                    MessageBox.Show("Turno eliminado correctamente.");
-                    calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
-                }
-            }
-            else
-            {
-                MessageBox.Show("Seleccione un turno de la lista para eliminar.");
-            }
-        }
-
-        private void btnModificar_Click(object sender, EventArgs e)
-        {
-            if (dgvTurnos.CurrentRow != null)
-            {
-                // Obtener el turno seleccionado
-                DateTime fechaHora = DateTime.Parse(dgvTurnos.CurrentRow.Cells["Hora"].Value.ToString());
-                TurnoDao dao = new TurnoDao();
-
-                var turno = dao.ListarTurnos().FirstOrDefault(t => t.FechaHora.ToString("HH:mm") == fechaHora.ToString("HH:mm"));
-                if (turno != null)
-                {
-                    FormModificarTurno frm = new FormModificarTurno(turno);
-                    frm.ShowDialog();
-
-                    // Refrescar la grilla
-                    calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
-                }
-            }
-            else
-            {
-                MessageBox.Show("Seleccione un turno de la lista para modificar.");
-            }
-        }
-
-
-        private void ConfigurarGrilla()
-        {
-            dgvTurnos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvTurnos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvTurnos.MultiSelect = false;
-            dgvTurnos.ReadOnly = true;
-            dgvTurnos.RowHeadersVisible = false;
-            dgvTurnos.AllowUserToAddRows = false;
-            dgvTurnos.AllowUserToDeleteRows = false;
-            dgvTurnos.AllowUserToResizeRows = false;
-
-            dgvTurnos.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
-            dgvTurnos.DefaultCellStyle.Font = new Font("Segoe UI", 10);
-            dgvTurnos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-
-            dgvTurnos.CellFormatting += dgvTurnos_CellFormatting;
-        }
-
-        private void dgvTurnos_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (dgvTurnos.Columns[e.ColumnIndex].Name == "Estado" && e.Value != null)
-            {
-                string estado = e.Value.ToString();
-
-                if (estado.Equals("Confirmado", StringComparison.OrdinalIgnoreCase))
-                {
-                    dgvTurnos.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGreen;
-                }
-                else if (estado.Equals("Pendiente", StringComparison.OrdinalIgnoreCase))
-                {
-                    dgvTurnos.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.Khaki;
-                }
-                else if (estado.Equals("Cancelado", StringComparison.OrdinalIgnoreCase))
-                {
-                    dgvTurnos.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
-                }
-            }
-        }
-
-        private void btnAgregarTurno_Click(object sender, EventArgs e)
-        {
-            dgvTurnos.Visible = false;
-            btnModificarTurno.Visible = false;
+            // Mostrar calendario y botones al iniciar
             calendario.Visible = true;
-            selectFechHora.Visible = true;
             btnReservar.Visible = true;
+            btnEliminarTurno.Visible = true;
+            btnModificarTurno.Visible = true;
         }
 
         private void LimpiarPantalla()
         {
-            calendario.Visible = false;
-            selectFechHora.Visible = false;
-            btnEliminarTurno.Visible = false;
-            btnReservar.Visible = false;
-            dgvTurnos.Visible = false;
-            btnModificarTurno.Visible = false;
-
-            dgvTurnos.DataSource = null;
-            if (dgvTurnos.Rows.Count > 0)
-                dgvTurnos.Rows.Clear();
+            flpTurnos.Controls.Clear();
+            tarjetaSeleccionada = null;
         }
 
         private void selectFechHora_ValueChanged(object sender, EventArgs e)
@@ -158,29 +61,6 @@ namespace MiPrimerTaller.Controles
             return new DateTime(fecha.Year, fecha.Month, fecha.Day, hora.Hour, hora.Minute, 0);
         }
 
-        private void btnModificarTurno_Click(object sender, EventArgs e)
-        {
-            btnModificarTurno.Visible = true;
-            btnEliminarTurno.Visible = false;
-            btnReservar.Visible = false;
-            calendario.Visible = true;
-            selectFechHora.Visible = false;
-            dgvTurnos.Visible = true;
-
-            PintarDiasConTurnos();
-        }
-
-        private void PintarDiasConTurnos()
-        {
-            TurnoDao dao = new TurnoDao();
-            var turnos = dao.ListarTurnos();
-
-            var fechas = turnos.Select(t => t.FechaHora.Date).Distinct().ToArray();
-
-            calendario.BoldedDates = fechas;
-            calendario.UpdateBoldedDates();
-        }
-
         private void btnReservar_Click(object sender, EventArgs e)
         {
             DateTime fechaHoraSeleccionada = ObtenerFechaHoraSeleccionada();
@@ -200,9 +80,39 @@ namespace MiPrimerTaller.Controles
 
             FormReservarTurno frm = new FormReservarTurno(fechaHoraSeleccionada);
             frm.ShowDialog();
+
+            calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
         }
 
-        // ✅ Solo se llena la grilla cuando seleccionás un día
+        private void btnModificarTurno_Click(object sender, EventArgs e)
+        {
+            if (tarjetaSeleccionada?.Tag is Turno turno)
+            {
+                FormModificarTurno frm = new FormModificarTurno(turno);
+                frm.ShowDialog();
+                calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un turno haciendo clic en la tarjeta.");
+            }
+        }
+
+        private void btnEliminarTurno_Click(object sender, EventArgs e)
+        {
+            if (tarjetaSeleccionada?.Tag is Turno turno)
+            {
+                TurnoDao dao = new TurnoDao();
+                dao.EliminarTurno(turno.Id);
+                MessageBox.Show("Turno eliminado correctamente.");
+                calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un turno haciendo clic en la tarjeta.");
+            }
+        }
+
         private void calendario_DateChanged(object sender, DateRangeEventArgs e)
         {
             DateTime fechaSeleccionada = e.Start.Date;
@@ -210,44 +120,70 @@ namespace MiPrimerTaller.Controles
 
             var turnosDelDia = dao.ListarTurnos()
                                   .Where(t => t.FechaHora.Date == fechaSeleccionada)
-                                  .Select(t => new
-                                  {
-                                      Hora = t.FechaHora.ToString("HH:mm"),
-                                      Cliente = t.Cliente.Nombre + " " + t.Cliente.Apellido,
-                                      Moto = t.Moto.Patente + " (" + t.Moto.Modelo + ")",
-                                      Servicio = t.Servicio.Nombre,
-                                      Estado = t.Estado,
-                                      Observaciones = t.Observaciones
-                                  })
                                   .ToList();
 
-            dgvTurnos.DataSource = turnosDelDia;
-            dgvTurnos.Visible = true;
+            MostrarTurnosComoTarjetas(turnosDelDia);
         }
 
-        private void btnEliminarTurno_Click(object sender, EventArgs e)
+        private void MostrarTurnosComoTarjetas(List<Turno> turnos)
         {
-            btnEliminarTurno.Visible = true;
-            btnModificarTurno.Visible = false;
-            btnReservar.Visible = false;
-            calendario.Visible = true;
-            selectFechHora.Visible = false;
-            dgvTurnos.Visible = true;
+            flpTurnos.Controls.Clear();
+            tarjetaSeleccionada = null;
 
-            PintarDiasConTurnos();
+            foreach (var turno in turnos)
+            {
+                Panel card = new Panel();
+                card.Width = 250;
+                card.Height = 150;
+                card.BorderStyle = BorderStyle.FixedSingle;
+                card.Margin = new Padding(10);
+                card.Tag = turno;
+
+                card.Click += Card_Click;
+
+                Label lblCliente = new Label();
+                lblCliente.Text = turno.Cliente.Nombre + " " + turno.Cliente.Apellido;
+                lblCliente.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+                lblCliente.Location = new Point(10, 10);
+                lblCliente.AutoSize = true;
+
+                Label lblMoto = new Label();
+                lblMoto.Text = turno.Moto.Patente + " (" + turno.Moto.Modelo + ")";
+                lblMoto.Location = new Point(10, 40);
+                lblMoto.AutoSize = true;
+
+                Label lblServicio = new Label();
+                lblServicio.Text = "Servicio: " + turno.Servicio.Nombre;
+                lblServicio.Location = new Point(10, 65);
+                lblServicio.AutoSize = true;
+
+                Label lblFechaHora = new Label();
+                lblFechaHora.Text = turno.FechaHora.ToString("dd/MM/yyyy HH:mm");
+                lblFechaHora.Location = new Point(10, 90);
+                lblFechaHora.AutoSize = true;
+
+                Label lblObs = new Label();
+                lblObs.Text = "Obs: " + turno.Observaciones;
+                lblObs.Location = new Point(10, 115);
+                lblObs.AutoSize = true;
+
+                card.Controls.Add(lblCliente);
+                card.Controls.Add(lblMoto);
+                card.Controls.Add(lblServicio);
+                card.Controls.Add(lblFechaHora);
+                card.Controls.Add(lblObs);
+
+                flpTurnos.Controls.Add(card);
+            }
         }
 
-        private void btnListarTurnos_Click(object sender, EventArgs e)
+        private void Card_Click(object sender, EventArgs e)
         {
-            calendario.Visible = true;
-            selectFechHora.Visible = false;
-            btnEliminarTurno.Visible = false;
-            btnReservar.Visible = false;
-            dgvTurnos.Visible = true;
-            btnModificarTurno.Visible = false;
+            if (tarjetaSeleccionada != null)
+                tarjetaSeleccionada.BackColor = Color.White;
 
-            // Ya no llenamos todos los turnos aquí, solo pintamos los días
-            PintarDiasConTurnos();
+            tarjetaSeleccionada = sender as Panel;
+            tarjetaSeleccionada.BackColor = Color.LightBlue;
         }
     }
 }

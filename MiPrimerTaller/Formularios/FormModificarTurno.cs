@@ -1,77 +1,81 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using MiPrimerTaller.Entidades;
 using MiPrimerTaller.DAOs;
-using MiPrimerTaller.Entidades; // Asegurate que acá esté tu clase Turno
 
 namespace MiPrimerTaller.Formularios
 {
     public partial class FormModificarTurno : Form
     {
-        private Turno turnoActual;
+        private Turno turno; // turno que se está modificando
+        private ServiceDao serviceDao = new ServiceDao(); // DAO para cargar servicios
+        private TurnoDao turnoDao = new TurnoDao();       // DAO para guardar cambios
 
-        // Constructor vacío
-        public FormModificarTurno()
+        public FormModificarTurno(Turno turnoSeleccionado)
         {
             InitializeComponent();
+            turno = turnoSeleccionado;
+
+            CargarServicios();
+            MostrarDatosTurno();
         }
 
-        // Constructor que recibe un turno
-        public FormModificarTurno(Turno turno) : this()
+        private void CargarServicios()
         {
-            turnoActual = turno;
+            // Traemos todos los servicios de la base
+            List<Service> servicios = serviceDao.ListarServicios();
 
-            // Cargar datos en los controles
-            txtCliente.Text = turno.Cliente.Nombre + " " + turno.Cliente.Apellido;
-            txtMoto.Text = turno.Moto.Patente + " (" + turno.Moto.Modelo + ")";
-            txtServicio.Text = turno.Servicio.Nombre;
-            dtpFechaHora.Value = turno.FechaHora;
-            txtObservaciones.Text = turno.Observaciones;
-
-            if (turno != null && turno.Cliente != null && turno.Moto != null && turno.Servicio != null)
-            {
-                FormModificarTurno frm = new FormModificarTurno(turno);
-                frm.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("El turno seleccionado no tiene datos completos.");
-            }
-
+            cmbServicio.DataSource = servicios;
+            cmbServicio.DisplayMember = "Nombre";
+            cmbServicio.ValueMember = "IdServicio";
         }
 
-        // Botón Guardar
+        private void MostrarDatosTurno()
+        {
+            txtCliente.Text = $"{turno.Cliente.Nombre} {turno.Cliente.Apellido}";
+            txtMoto.Text = $"{turno.Moto.Patente} ({turno.Moto.Marca} {turno.Moto.Modelo})";
+
+            // Seleccionamos el servicio actual en el ComboBox
+            cmbServicio.SelectedValue = turno.Servicio.IdServicio;
+
+            // Redondeamos la hora a enteros (minutos = 00)
+            dtpFechaHora.Value = new DateTime(
+                turno.FechaHora.Year,
+                turno.FechaHora.Month,
+                turno.FechaHora.Day,
+                turno.FechaHora.Hour,
+                0, 0);
+
+            txtObservaciones.Text = turno.Observaciones;
+        }
+
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            // Actualizamos los datos del turno
+            turno.FechaHora = dtpFechaHora.Value; // minutos ya están en 00
+            turno.Servicio = (Service)cmbServicio.SelectedItem;
+            turno.Observaciones = txtObservaciones.Text;
+
             try
             {
-                // Actualizar los datos del turno con lo que editó el usuario
-                turnoActual.FechaHora = dtpFechaHora.Value;
-                turnoActual.Observaciones = txtObservaciones.Text;
-
-                // Guardar en la base de datos
-                TurnoDao dao = new TurnoDao();
-                dao.ModificarTurno(turnoActual);
-
-                MessageBox.Show("Turno actualizado correctamente.", "Éxito",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                turnoDao.ModificarTurno(turno);
+                MessageBox.Show("Turno modificado correctamente.", "Éxito",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar el turno: " + ex.Message,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al modificar el turno: " + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        // Botón Cancelar
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
-
-       
     }
 }

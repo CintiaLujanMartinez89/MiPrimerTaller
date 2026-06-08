@@ -72,5 +72,26 @@ namespace MiPrimerTaller.Controles
             }
         }
 
+        private void btnEliminarCliente_Click(object sender, EventArgs e)
+        {
+            if (DGVClientes.CurrentRow != null)
+            {
+                int dni = Convert.ToInt32(DGVClientes.CurrentRow.Cells["Dni"].Value);
+
+                var dao = new ClienteDao();
+                dao.Eliminar(dni);
+
+                MessageBox.Show("Cliente eliminado correctamente.", "Éxito",
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Refrescar la grilla
+                DGVClientes.DataSource = dao.ObtenerTodas();
+            }
+            else
+            {
+                MessageBox.Show("Seleccione un cliente para eliminar.", "Aviso",
+                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }

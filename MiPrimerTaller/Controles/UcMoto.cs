@@ -1,4 +1,5 @@
 ﻿using MiPrimerTaller.DAOs;
+using MiPrimerTaller.Entidades;
 using MiPrimerTaller.Formularios;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,33 @@ namespace MiPrimerTaller.Controles
 
             // Refrescamos la grilla después de agregar
             DGVmotos.DataSource = new MotoDao().Listar();
+        }
+
+        private void btnModificarMoto_Click(object sender, EventArgs e)
+        {
+            if (DGVmotos.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccioná una moto de la lista primero.");
+                return;
+            }
+
+            try
+            {
+                // Obtenemos la moto seleccionada
+                Moto motoSeleccionada = (Moto)DGVmotos.CurrentRow.DataBoundItem;
+
+                // Abrimos el formulario de modificación
+                FormModificarMoto form = new FormModificarMoto(motoSeleccionada);
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    // Refrescamos la grilla después de modificar
+                    DGVmotos.DataSource = new MotoDao().Listar();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al modificar moto: " + ex.Message);
+            }
         }
 
     }
