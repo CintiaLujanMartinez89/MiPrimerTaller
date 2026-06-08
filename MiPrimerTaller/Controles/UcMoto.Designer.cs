@@ -116,6 +116,7 @@ namespace MiPrimerTaller.Controles
             this.btnEliminarMoto.Text = "Eliminar Moto";
             this.btnEliminarMoto.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnEliminarMoto.UseVisualStyleBackColor = false;
+            this.btnEliminarMoto.Click += new System.EventHandler(this.btnEliminarMoto_Click);
             // 
             // DGVmotos
             // 

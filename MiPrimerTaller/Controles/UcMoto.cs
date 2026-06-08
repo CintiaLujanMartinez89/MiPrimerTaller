@@ -77,5 +77,46 @@ namespace MiPrimerTaller.Controles
             }
         }
 
+        private void btnEliminarMoto_Click(object sender, EventArgs e)
+        {
+            if (DGVmotos.CurrentRow != null)
+            {
+                // Obtenemos la patente de la moto seleccionada en la grilla
+                string patente = DGVmotos.CurrentRow.Cells["Patente"].Value.ToString();
+
+                // Confirmamos con el usuario
+                var confirm = MessageBox.Show(
+                    $"¿Seguro que deseas eliminar la moto con patente {patente}?",
+                    "Confirmar eliminación",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (confirm == DialogResult.Yes)
+                {
+                    try
+                    {
+                        MotoDao dao = new MotoDao();
+                        dao.Eliminar(patente);
+
+                        MessageBox.Show("Moto eliminada correctamente.", "Éxito",
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Refrescamos la grilla
+                        DGVmotos.DataSource = dao.Listar();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error al eliminar la moto: " + ex.Message,
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecciona una moto para eliminar.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
     }
 }

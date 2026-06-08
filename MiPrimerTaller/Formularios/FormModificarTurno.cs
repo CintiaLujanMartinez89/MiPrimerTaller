@@ -6,7 +6,7 @@ using MiPrimerTaller.DAOs;
 
 namespace MiPrimerTaller.Formularios
 {
-    public partial class FormModificarTurno : Form
+    public partial class FormModificarTurno : FormBase
     {
         private Turno turno; // turno que se está modificando
         private ServiceDao serviceDao = new ServiceDao(); // DAO para cargar servicios
@@ -19,11 +19,24 @@ namespace MiPrimerTaller.Formularios
 
             CargarServicios();
             MostrarDatosTurno();
+
+            // 👉 Importante: agregar los controles al panelMain de FormBase
+            panelMain.Controls.Add(lblCliente);
+            panelMain.Controls.Add(txtCliente);
+            panelMain.Controls.Add(lblMoto);
+            panelMain.Controls.Add(txtMoto);
+            panelMain.Controls.Add(lblServicio);
+            panelMain.Controls.Add(cmbServicio);
+            panelMain.Controls.Add(lblFechaHora);
+            panelMain.Controls.Add(dtpFechaHora);
+            panelMain.Controls.Add(lblObservaciones);
+            panelMain.Controls.Add(txtObservaciones);
+            panelMain.Controls.Add(btnGuardar);
+            panelMain.Controls.Add(btnCancelar);
         }
 
         private void CargarServicios()
         {
-            // Traemos todos los servicios de la base
             List<Service> servicios = serviceDao.ListarServicios();
 
             cmbServicio.DataSource = servicios;
@@ -36,10 +49,8 @@ namespace MiPrimerTaller.Formularios
             txtCliente.Text = $"{turno.Cliente.Nombre} {turno.Cliente.Apellido}";
             txtMoto.Text = $"{turno.Moto.Patente} ({turno.Moto.Marca} {turno.Moto.Modelo})";
 
-            // Seleccionamos el servicio actual en el ComboBox
             cmbServicio.SelectedValue = turno.Servicio.IdServicio;
 
-            // Redondeamos la hora a enteros (minutos = 00)
             dtpFechaHora.Value = new DateTime(
                 turno.FechaHora.Year,
                 turno.FechaHora.Month,
@@ -52,8 +63,7 @@ namespace MiPrimerTaller.Formularios
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            // Actualizamos los datos del turno
-            turno.FechaHora = dtpFechaHora.Value; // minutos ya están en 00
+            turno.FechaHora = dtpFechaHora.Value;
             turno.Servicio = (Service)cmbServicio.SelectedItem;
             turno.Observaciones = txtObservaciones.Text;
 

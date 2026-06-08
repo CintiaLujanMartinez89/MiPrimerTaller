@@ -31,6 +31,9 @@ namespace MiPrimerTaller.Controles
             btnReservar.Visible = true;
             btnEliminarTurno.Visible = true;
             btnModificarTurno.Visible = true;
+
+            // 👉 Pintar días con turnos al iniciar
+            PintarDiasConTurnos();
         }
 
         private void LimpiarPantalla()
@@ -81,6 +84,8 @@ namespace MiPrimerTaller.Controles
             FormReservarTurno frm = new FormReservarTurno(fechaHoraSeleccionada);
             frm.ShowDialog();
 
+            // 👉 refrescar calendario y negrita
+            PintarDiasConTurnos();
             calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
         }
 
@@ -90,6 +95,9 @@ namespace MiPrimerTaller.Controles
             {
                 FormModificarTurno frm = new FormModificarTurno(turno);
                 frm.ShowDialog();
+
+                // 👉 refrescar calendario y negrita
+                PintarDiasConTurnos();
                 calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
             }
             else
@@ -105,6 +113,9 @@ namespace MiPrimerTaller.Controles
                 TurnoDao dao = new TurnoDao();
                 dao.EliminarTurno(turno.Id);
                 MessageBox.Show("Turno eliminado correctamente.");
+
+                // 👉 refrescar calendario y negrita
+                PintarDiasConTurnos();
                 calendario_DateChanged(calendario, new DateRangeEventArgs(calendario.SelectionStart, calendario.SelectionEnd));
             }
             else
@@ -184,6 +195,16 @@ namespace MiPrimerTaller.Controles
 
             tarjetaSeleccionada = sender as Panel;
             tarjetaSeleccionada.BackColor = Color.LightBlue;
+        }
+
+        // 👉 Nuevo método para pintar días con turnos
+        private void PintarDiasConTurnos()
+        {
+            TurnoDao dao = new TurnoDao();
+            var turnos = dao.ListarTurnos();
+
+            var fechas = turnos.Select(t => t.FechaHora.Date).Distinct().ToArray();
+            calendario.BoldedDates = fechas;
         }
     }
 }
