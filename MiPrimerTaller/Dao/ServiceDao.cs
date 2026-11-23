@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
+using System.Windows.Forms;
 using MiPrimerTaller.Entidades;
 
 namespace MiPrimerTaller.DAOs
 {
     public class ServiceDao
     {
-        private string connectionString = @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db;Version=3;";
+        private string connectionString =
+            $@"Data Source={Path.Combine(Application.StartupPath, "MotoGaragaMD.db")};Version=3;";
 
         // Listar todos los servicios
         public List<Service> ListarServicios()

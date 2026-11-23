@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
+using System.Windows.Forms;
 using MiPrimerTaller.Entidades;
 
 namespace MiPrimerTaller.DAOs
 {
     public class ClienteDao
     {
-        private string connectionString = @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db;Version=3;";
+        private string connectionString =
+       $@"Data Source={Path.Combine(Application.StartupPath, "MotoGaragaMD.db")};Version=3;UTF8Encoding=True;";
 
         // Obtener todos los clientes
         public List<Cliente> ObtenerTodas()
         {
             List<Cliente> lista = new List<Cliente>();
-
-            using (var conn = new SQLiteConnection(connectionString))
+try{            using (var conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
                 string sql = "SELECT Dni, Nombre, Apellido, Telefono, Email FROM Cliente";
@@ -37,9 +39,42 @@ namespace MiPrimerTaller.DAOs
                     }
                 }
             }
-
+        }
+catch (Exception ex)
+{
+    MessageBox.Show("Error al abrir la base: " + ex.Message);
+}
             return lista;
         }
+
+        public void Actualizar(Cliente cliente)
+        {
+            using (var conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"UPDATE Cliente 
+                       SET Nombre=@Nombre, Apellido=@Apellido, Telefono=@Telefono, Email=@Email
+                       WHERE Dni=@Dni";
+
+                using (var cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Nombre", cliente.Nombre);
+                    cmd.Parameters.AddWithValue("@Apellido", cliente.Apellido);
+                    cmd.Parameters.AddWithValue("@Telefono", cliente.Telefono);
+                    cmd.Parameters.AddWithValue("@Email", cliente.Email);
+                    cmd.Parameters.AddWithValue("@Dni", cliente.Dni);
+
+                   
+                    int filas = cmd.ExecuteNonQuery();
+                    if (filas == 0)
+                        throw new Exception("No se encontró el cliente para actualizar.");
+
+                }
+            }
+        }
+
+
+
 
         // Insertar un cliente
         public void Insertar(Cliente cliente)
@@ -63,29 +98,7 @@ namespace MiPrimerTaller.DAOs
             }
         }
 
-        // Actualizar un cliente
-        public void Actualizar(Cliente cliente)
-        {
-            using (var conn = new SQLiteConnection(connectionString))
-            {
-                conn.Open();
-                string sql = @"UPDATE Cliente 
-                               SET Nombre=@Nombre, Apellido=@Apellido, Telefono=@Telefono, Email=@Email 
-                               WHERE Dni=@Dni";
-
-                using (var cmd = new SQLiteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Nombre", cliente.Nombre);
-                    cmd.Parameters.AddWithValue("@Apellido", cliente.Apellido);
-                    cmd.Parameters.AddWithValue("@Telefono", cliente.Telefono);
-                    cmd.Parameters.AddWithValue("@Email", cliente.Email);
-                    cmd.Parameters.AddWithValue("@Dni", cliente.Dni);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
+  
         // Obtener cliente por DNI
         public Cliente ObtenerPorId(int dni)
         {

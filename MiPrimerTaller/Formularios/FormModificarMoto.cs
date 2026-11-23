@@ -9,6 +9,7 @@ namespace MiPrimerTaller.Formularios
     {
         private Moto moto;
         private MotoDao motoDao = new MotoDao();
+        private ClienteDao clienteDao = new ClienteDao();
 
         public FormModificarMoto(Moto motoSeleccionada)
         {
@@ -24,7 +25,7 @@ namespace MiPrimerTaller.Formularios
             panelMain.Controls.Add(lblModelo);
             panelMain.Controls.Add(txtModelo);
             panelMain.Controls.Add(lblCliente);
-            panelMain.Controls.Add(txtCliente);
+            panelMain.Controls.Add(cmbClientes); // ahora ComboBox en vez de TextBox
             panelMain.Controls.Add(lblKmInicial);
             panelMain.Controls.Add(txtKmInicial);
             panelMain.Controls.Add(btnGuardar);
@@ -36,8 +37,16 @@ namespace MiPrimerTaller.Formularios
             txtPatente.Text = moto.Patente;
             txtMarca.Text = moto.Marca;
             txtModelo.Text = moto.Modelo;
-            txtCliente.Text = $"{moto.Cliente.Nombre} {moto.Cliente.Apellido}";
             txtKmInicial.Text = moto.KmInicial.ToString();
+
+            // cargar clientes en el combo
+            var clientes = clienteDao.ObtenerTodas();
+            cmbClientes.DataSource = clientes;
+            cmbClientes.DisplayMember = "NombreCompletoConDni"; //  muestra DNI + Nombre + Apellido
+            cmbClientes.ValueMember = "Dni";
+
+            // seleccionar el cliente actual
+            cmbClientes.SelectedValue = moto.Cliente.Dni;
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -47,6 +56,10 @@ namespace MiPrimerTaller.Formularios
                 moto.Marca = txtMarca.Text;
                 moto.Modelo = txtModelo.Text;
                 moto.KmInicial = int.TryParse(txtKmInicial.Text, out int km) ? km : moto.KmInicial;
+
+                // cliente seleccionado en el combo
+                var clienteSeleccionado = (Cliente)cmbClientes.SelectedItem;
+                moto.Cliente = clienteSeleccionado;
 
                 motoDao.Actualizar(moto);
 

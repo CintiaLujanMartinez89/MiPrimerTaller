@@ -10,6 +10,7 @@ namespace MiPrimerTaller.Formularios
         private MenuButton btnMotos;
         private MenuButton btnServicios;
         private MenuButton btnTurnos;
+        private MenuButton btnPresupuestos; // nuevo botón
 
         public FormInicio()
         {
@@ -31,11 +32,13 @@ namespace MiPrimerTaller.Formularios
             btnMotos = new MenuButton { Text = "Motos" };
             btnServicios = new MenuButton { Text = "Servicios" };
             btnTurnos = new MenuButton { Text = "Turnos" };
+            btnPresupuestos = new MenuButton { Text = "Presupuestos" }; // nuevo
 
             sidebar.Controls.Add(btnClientes);
             sidebar.Controls.Add(btnMotos);
             sidebar.Controls.Add(btnServicios);
             sidebar.Controls.Add(btnTurnos);
+            sidebar.Controls.Add(btnPresupuestos); // agregar al menú
 
             this.Controls.Add(sidebar);
 
@@ -64,6 +67,13 @@ namespace MiPrimerTaller.Formularios
             {
                 panelMain.Controls.Clear();
                 UcTurno uc = new UcTurno { Dock = DockStyle.Fill };
+                panelMain.Controls.Add(uc);
+            };
+
+            btnPresupuestos.Click += (s, e) =>
+            {
+                panelMain.Controls.Clear();
+                UcPresupuesto uc = new UcPresupuesto { Dock = DockStyle.Fill };
                 panelMain.Controls.Add(uc);
             };
         }

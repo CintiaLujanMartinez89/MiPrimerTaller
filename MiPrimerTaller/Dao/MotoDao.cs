@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
+using System.Windows.Forms;
 using MiPrimerTaller.Entidades;
 
 namespace MiPrimerTaller.DAOs
@@ -11,8 +13,8 @@ namespace MiPrimerTaller.DAOs
 
         public MotoDao()
         {
-            connectionString = @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db;Version=3;";
-        }
+          connectionString =$@"Data Source={Path.Combine(Application.StartupPath, "MotoGaragaMD.db")};Version=3;";
+    }
 
         // Insertar moto
         public void Insertar(Moto moto)
@@ -33,6 +35,52 @@ namespace MiPrimerTaller.DAOs
                 }
             }
         }
+
+
+        public List<Moto> ListarPorCliente(int dniCliente)
+        {
+            var lista = new List<Moto>();
+            using (var conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = @"SELECT m.Patente, m.Marca, m.Modelo, m.KmInicial,
+                              c.Dni, c.Nombre, c.Apellido
+                       FROM Moto m
+                       INNER JOIN Cliente c ON m.DniCliente = c.Dni
+                       WHERE m.DniCliente = @DniCliente";
+
+                using (var cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@DniCliente", dniCliente);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var cliente = new Cliente
+                            {
+                                Dni = reader.GetInt32(4),
+                                Nombre = reader.GetString(5),
+                                Apellido = reader.GetString(6)
+                            };
+
+                            var moto = new Moto
+                            {
+                                Patente = reader.GetString(0),
+                                Marca = reader.GetString(1),
+                                Modelo = reader.GetString(2),
+                                KmInicial = reader.GetInt32(3),
+                                Cliente = cliente
+                            };
+
+                            lista.Add(moto);
+                        }
+                    }
+                }
+            }
+            return lista;
+        }
+
 
         // Listar todas las motos con su cliente
         public List<Moto> Listar()

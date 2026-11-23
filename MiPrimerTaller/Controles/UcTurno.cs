@@ -18,7 +18,8 @@ namespace MiPrimerTaller.Controles
             InitializeComponent();
             LimpiarPantalla();
 
-            // Configurar selector de hora
+          
+
             selectFechHora.Format = DateTimePickerFormat.Custom;
             selectFechHora.CustomFormat = "HH:00";
             selectFechHora.ShowUpDown = true;
@@ -26,16 +27,20 @@ namespace MiPrimerTaller.Controles
 
             selectFechHora.ValueChanged += selectFechHora_ValueChanged;
 
-            // Mostrar calendario y botones al iniciar
             calendario.Visible = true;
             btnReservar.Visible = true;
             btnEliminarTurno.Visible = true;
             btnModificarTurno.Visible = true;
 
-            // 👉 Pintar días con turnos al iniciar
             PintarDiasConTurnos();
-        }
 
+            // Mostrar inmediatamente los turnos del día seleccionado
+            calendario_DateChanged(
+                calendario,
+                new DateRangeEventArgs(
+                    calendario.SelectionStart,
+                    calendario.SelectionEnd));
+        }
         private void LimpiarPantalla()
         {
             flpTurnos.Controls.Clear();
@@ -201,9 +206,15 @@ namespace MiPrimerTaller.Controles
         private void PintarDiasConTurnos()
         {
             TurnoDao dao = new TurnoDao();
+
             var turnos = dao.ListarTurnos();
 
-            var fechas = turnos.Select(t => t.FechaHora.Date).Distinct().ToArray();
+          
+
+            var fechas = turnos.Select(t => t.FechaHora.Date)
+                               .Distinct()
+                               .ToArray();
+
             calendario.BoldedDates = fechas;
         }
     }

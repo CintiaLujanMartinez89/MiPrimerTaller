@@ -24,7 +24,7 @@
             this.lblModelo = new System.Windows.Forms.Label();
             this.txtModelo = new System.Windows.Forms.TextBox();
             this.lblCliente = new System.Windows.Forms.Label();
-            this.txtCliente = new System.Windows.Forms.TextBox();
+            this.cmbClientes = new System.Windows.Forms.ComboBox(); // 👉 reemplazo del TextBox
             this.lblKmInicial = new System.Windows.Forms.Label();
             this.txtKmInicial = new System.Windows.Forms.TextBox();
             this.btnGuardar = new System.Windows.Forms.Button();
@@ -82,12 +82,12 @@
             this.lblCliente.Size = new System.Drawing.Size(47, 15);
             this.lblCliente.Text = "Cliente:";
             // 
-            // txtCliente
+            // cmbClientes
             // 
-            this.txtCliente.Location = new System.Drawing.Point(120, 147);
-            this.txtCliente.Name = "txtCliente";
-            this.txtCliente.Size = new System.Drawing.Size(250, 23);
-            this.txtCliente.ReadOnly = true;
+            this.cmbClientes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbClientes.Location = new System.Drawing.Point(120, 147);
+            this.cmbClientes.Name = "cmbClientes";
+            this.cmbClientes.Size = new System.Drawing.Size(250, 23);
             // 
             // lblKmInicial
             // 
@@ -129,7 +129,7 @@
             this.panelMain.Controls.Add(this.lblModelo);
             this.panelMain.Controls.Add(this.txtModelo);
             this.panelMain.Controls.Add(this.lblCliente);
-            this.panelMain.Controls.Add(this.txtCliente);
+            this.panelMain.Controls.Add(this.cmbClientes); // ahora ComboBox
             this.panelMain.Controls.Add(this.lblKmInicial);
             this.panelMain.Controls.Add(this.txtKmInicial);
             this.panelMain.Controls.Add(this.btnGuardar);
@@ -148,7 +148,7 @@
         private System.Windows.Forms.Label lblModelo;
         private System.Windows.Forms.TextBox txtModelo;
         private System.Windows.Forms.Label lblCliente;
-        private System.Windows.Forms.TextBox txtCliente;
+        private System.Windows.Forms.ComboBox cmbClientes; // 👉 nuevo control
         private System.Windows.Forms.Label lblKmInicial;
         private System.Windows.Forms.TextBox txtKmInicial;
         private System.Windows.Forms.Button btnGuardar;

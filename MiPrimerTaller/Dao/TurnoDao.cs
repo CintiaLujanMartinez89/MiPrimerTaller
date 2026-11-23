@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.IO;
+using System.Windows.Forms;
 using MiPrimerTaller.Entidades;
 
 namespace MiPrimerTaller.DAOs
@@ -8,8 +10,10 @@ namespace MiPrimerTaller.DAOs
     public class TurnoDao
     {
         private string connectionString =
-            @"Data Source=C:\Users\Usuario\Desktop\Practica Taller\MotoGaragaMD.db";
+             $@"Data Source={Path.Combine(Application.StartupPath, "MotoGaragaMD.db")};Version=3;";
         private static readonly object dbLock = new object();
+
+
 
         private void ActivarWAL(SQLiteConnection conn)
         {
@@ -42,7 +46,18 @@ namespace MiPrimerTaller.DAOs
                         cmd.Parameters.AddWithValue("@estado", turno.Estado);
                         cmd.Parameters.AddWithValue("@observaciones", turno.Observaciones ?? "");
 
-                        cmd.ExecuteNonQuery();
+                        try
+                        {
+                            int filas = cmd.ExecuteNonQuery();
+
+                            MessageBox.Show(
+                                $"Filas insertadas: {filas}\n\nBase utilizada:\n{connectionString}"
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Error al guardar:\n" + ex.Message);
+                        }
                     }
                 }
             }
@@ -138,6 +153,9 @@ namespace MiPrimerTaller.DAOs
                 return null;
             }
         }
+
+      
+
 
         // Listar todos los Turnos
         public List<Turno> ListarTurnos()
